@@ -1,16 +1,64 @@
-import pandas as pd
+from flask import Flask, render_template, request
+import requests
 
-movies = pd.read_csv("movies.csv")
+app = Flask(__name__)
 
-movie = input("Enter movie name: ")
+TMDB_API_KEY = "6f6cda2298b50c6b1fe312bc9df90f8e"
 
-selected = movies[movies["title"].str.contains(movie, case=False)]
 
-genre = selected.iloc[0]["genres"]
+def search_movies(movie_name):
 
-recommendations = movies[movies["genres"] == genre]
+    url = "https://api.themoviedb.org/3/search/movie"
 
-print("\nRecommended Movies:")
+    params = {
+        "api_key": TMDB_API_KEY,
+        "query": movie_name
+    }
 
-for movie in recommendations["title"]:
-    print(movie)
+    response = requests.get(url, params=params)
+
+    data = response.json()
+
+    movies = []
+
+    for movie in data.get("results", [])[:10]:
+
+        poster = ""
+
+        if movie.get("poster_path"):
+            poster = (
+                "https://image.tmdb.org/t/p/w500"
+                + movie["poster_path"]
+            )
+
+        movies.append({
+            "title": movie.get("title", "N/A"),
+            "rating": movie.get("vote_average", "N/A"),
+            "year": movie.get("release_date", "N/A")[:4]
+            if movie.get("release_date")
+            else "N/A",
+            "poster": poster
+        })
+
+    return movies
+
+
+@app.route("/", methods=["GET", "POST"])
+def home():
+
+    recommendations = []
+
+    if request.method == "POST":
+
+        movie_name = request.form["movie"]
+
+        recommendations = search_movies(movie_name)
+
+    return render_template(
+        "index.html",
+        recommendations=recommendations
+    )
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

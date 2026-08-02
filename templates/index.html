@@ -1,22 +1,99 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Movie Recommender</title>
+
+    <title>Movie Recommendation System</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            text-align:center;
+            background:#f4f4f4;
+        }
+
+        h1{
+            color:#333;
+        }
+
+        input{
+            padding:10px;
+            width:300px;
+        }
+
+        button{
+            padding:10px 20px;
+        }
+
+        .movie-card{
+
+            display:inline-block;
+
+            width:220px;
+
+            margin:15px;
+
+            padding:10px;
+
+            background:white;
+
+            border-radius:10px;
+
+            box-shadow:0px 0px 5px gray;
+        }
+
+        img{
+            width:180px;
+            border-radius:10px;
+        }
+
+    </style>
+
 </head>
+
 <body>
-<h1>Prajwal welcomes you</h1>
-<h1>Movie Recommendation System</h1>
 
-<form method="POST">
-    <input type="text" name="movie">
-    <button type="submit">Recommend</button>
-</form>
-<h2>Recommendations</h2>
+    <h1> Movie Recommendation System</h1>
 
-<ul>
-{% for movie in recommendations %}
-<li>{{ movie }}</li>
-{% endfor %}
-</ul>
+    <form method="POST">
+
+        <input
+            type="text"
+            name="movie"
+            placeholder="Enter Movie Name"
+            required>
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+    <br>
+
+    {% for movie in recommendations %}
+
+    <div class="movie-card">
+
+        <img src="{{ movie.poster }}">
+
+        <h3>{{ movie.title }}</h3>
+
+        <p>
+            Rating:
+            {{ movie.rating }}
+        </p>
+
+        <p>
+            Year:
+            {{ movie.year }}
+        </p>
+
+    </div>
+
+    {% endfor %}
+
 </body>
+
 </html>
