@@ -22,11 +22,9 @@ def format_movies(movie_list):
          "title": movie.get("title", "N/A"),
          "rating": movie.get("vote_average", "N/A"),
          "year": movie.get("release_date", "")[:4]
-         if movie.get("release_date")
-         else "N/A",
          "poster": poster,
          "overview": movie.get("overview", "No description available")
-})
+     })
     return results
 
 
