@@ -27,7 +27,7 @@ def format_movies(movie_list):
          "overview": movie.get("overview", "No description available")
      })
     print("Movies found:",len(results))
-    return results
+return results
 
 
 def search_movie(movie_name):
