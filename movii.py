@@ -191,3 +191,28 @@ def get_trailer(movie_id):
             )
 
     return ""
+def get_similar_movies(movie_id):
+
+    url = (
+        f"https://api.themoviedb.org/3/movie/"
+        f"{movie_id}/similar"
+    )
+
+    data = requests.get(
+        url,
+        params={"api_key": TMDB_API_KEY}
+    ).json()
+
+    return format_movies(
+        data.get("results", [])
+    )
+def get_movie_details(movie_id):
+
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}"
+
+    data = requests.get(
+        url,
+        params={"api_key": TMDB_API_KEY}
+    ).json()
+
+    return data

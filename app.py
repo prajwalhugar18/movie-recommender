@@ -7,7 +7,10 @@ from movii import (
     search_year,
     trending_movies,
     top_rated_movies,
-    search_language
+    search_language,
+    get_trailer,
+    get_movie_details,
+    get_similar_movies
 )
 app = Flask(__name__)
 
@@ -90,6 +93,30 @@ def language(lang):
             languages.get(lang, "en")
         )
     )
+@app.route("/trailer/<int:movie_id>")
+def trailer(movie_id):
 
+    return get_trailer(movie_id)
+@app.route("/movie/<int:movie_id>")
+def movie_details(movie_id):
+
+    details = get_movie_details(movie_id)
+
+    return render_template(
+        "details.html",
+        movie=details
+    )
+
+@app.route("/similar/<int:movie_id>")
+def similar(movie_id):
+
+    recommendations = get_similar_movies(
+        movie_id
+    )
+
+    return render_template(
+        "index.html",
+        recommendations=recommendations
+    )
 if __name__ == "__main__":
     app.run(debug=True)

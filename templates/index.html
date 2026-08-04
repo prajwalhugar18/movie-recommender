@@ -118,6 +118,24 @@
         <p>
             Year: {{ movie["year"] }}
         </p>
+        <br>
+
+<a href="/movie/{{ movie['id'] }}">
+    Details
+</a>
+
+<br><br>
+
+<a href="/similar/{{ movie['id'] }}">
+    Similar Movies
+</a>
+
+<br><br>
+
+<a href="/trailer/{{ movie['id'] }}"
+target="_blank">
+    Watch Trailer
+</a>
         <p>
             {{ movie["overview"] }}
         </p>

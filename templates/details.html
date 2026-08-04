@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ movie.title }}</title>
+</head>
+
+<body>
+
+<h1>{{ movie.title }}</h1>
+
+{% if movie.poster_path %}
+<img
+src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}"
+width="300">
+{% endif %}
+
+<h3>Release Date</h3>
+<p>{{ movie.release_date }}</p>
+
+<h3>Rating</h3>
+<p>{{ movie.vote_average }}</p>
+
+<h3>Overview</h3>
+<p>{{ movie.overview }}</p>
+
+<a href="/">
+Back Home
+</a>
+
+</body>
+</html>
