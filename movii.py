@@ -17,29 +17,35 @@ def format_movies(movie_list):
                 + movie["poster_path"]
             )
 
-    results.append({
-         "id": movie.get("id"),
-         "title": movie.get("title", "N/A"),
-         "rating": movie.get("vote_average", "N/A"),
-         "year": movie.get("release_date", "")[:4]if
-         movie.get("release_date") else "NA",
-         "poster": poster,
-         "overview": movie.get("overview", "No description available")
-     })
-    print("Movies found:",len(results))
-return results
+        results.append({
+            "id": movie.get("id"),
+            "title": movie.get("title", "N/A"),
+            "rating": movie.get("vote_average", "N/A"),
+            "year": movie.get("release_date", "")[:4]
+            if movie.get("release_date")
+            else "N/A",
+            "poster": poster,
+            "overview": movie.get(
+                "overview",
+                "No description available"
+            )
+        })
+
+    print("Movies found:", len(results))
+    return results
 
 
 def search_movie(movie_name):
 
     url = "https://api.themoviedb.org/3/search/movie"
 
-    params = {
-        "api_key": TMDB_API_KEY,
-        "query": movie_name
-    }
-
-    data = requests.get(url, params=params).json()
+    data = requests.get(
+        url,
+        params={
+            "api_key": TMDB_API_KEY,
+            "query": movie_name
+        }
+    ).json()
 
     return format_movies(data.get("results", []))
 
@@ -71,7 +77,9 @@ def search_actor(actor_name):
         params={"api_key": TMDB_API_KEY}
     ).json()
 
-    return format_movies(credits.get("cast", []))
+    return format_movies(
+        credits.get("cast", [])
+    )
 
 
 def search_genre(genre_id):
@@ -87,7 +95,9 @@ def search_genre(genre_id):
         }
     ).json()
 
-    return format_movies(data.get("results", []))
+    return format_movies(
+        data.get("results", [])
+    )
 
 
 def search_year(year):
@@ -103,17 +113,25 @@ def search_year(year):
         }
     ).json()
 
-    return format_movies(data.get("results", []))
+    return format_movies(
+        data.get("results", [])
+    )
+
+
 def trending_movies():
 
     url = "https://api.themoviedb.org/3/trending/movie/week"
 
     data = requests.get(
         url,
-        params={"api_key": TMDB_API_KEY}
+        params={
+            "api_key": TMDB_API_KEY
+        }
     ).json()
 
-    return format_movies(data.get("results", []))
+    return format_movies(
+        data.get("results", [])
+    )
 
 
 def top_rated_movies():
@@ -122,10 +140,14 @@ def top_rated_movies():
 
     data = requests.get(
         url,
-        params={"api_key": TMDB_API_KEY}
+        params={
+            "api_key": TMDB_API_KEY
+        }
     ).json()
 
-    return format_movies(data.get("results", []))
+    return format_movies(
+        data.get("results", [])
+    )
 
 
 def search_language(language):
@@ -140,16 +162,23 @@ def search_language(language):
         }
     ).json()
 
-    return format_movies(data.get("results", []))
+    return format_movies(
+        data.get("results", [])
+    )
 
 
 def get_trailer(movie_id):
 
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}/videos"
+    url = (
+        f"https://api.themoviedb.org/3/movie/"
+        f"{movie_id}/videos"
+    )
 
     data = requests.get(
         url,
-        params={"api_key": TMDB_API_KEY}
+        params={
+            "api_key": TMDB_API_KEY
+        }
     ).json()
 
     for video in data.get("results", []):
