@@ -45,12 +45,32 @@
 
 <h1>Prajwal Movie Recommendation System</h1>
 
-<form method="POST">
+    <form method="POST">
+
+    <select name="search_type">
+
+        <option value="movie">
+            Movie Name
+        </option>
+
+        <option value="actor">
+            Actor Name
+        </option>
+
+        <option value="genre">
+            Genre
+        </option>
+
+        <option value="year">
+            Year
+        </option>
+
+    </select>
 
     <input
         type="text"
-        name="movie"
-        placeholder="Enter Movie Name"
+        name="query"
+        placeholder="Enter value"
         required>
 
     <button type="submit">
@@ -58,6 +78,7 @@
     </button>
 
 </form>
+
 
 <br>
 

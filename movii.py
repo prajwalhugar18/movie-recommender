@@ -3,23 +3,11 @@ import requests
 TMDB_API_KEY = "6f6cda2298b50c6b1fe312bc9df90f8e"
 
 
-def search_movies(movie_name):
+def format_movies(movie_list):
 
-    url = "https://api.themoviedb.org/3/search/movie"
+    results = []
 
-    params = {
-        "api_key": TMDB_API_KEY,
-        "query": movie_name
-    }
-
-    response = requests.get(url, params=params)
-
-    data = response.json()
-    print("Searching for:", movie_name)
-    print(data)
-    movies = []
-
-    for movie in data.get("results", [])[:10]:
+    for movie in movie_list[:20]:
 
         poster = ""
 
@@ -29,7 +17,7 @@ def search_movies(movie_name):
                 + movie["poster_path"]
             )
 
-        movies.append({
+        results.append({
             "title": movie.get("title", "N/A"),
             "rating": movie.get("vote_average", "N/A"),
             "year": movie.get("release_date", "")[:4]
@@ -38,4 +26,80 @@ def search_movies(movie_name):
             "poster": poster
         })
 
-    return movies
+    return results
+
+
+def search_movie(movie_name):
+
+    url = "https://api.themoviedb.org/3/search/movie"
+
+    params = {
+        "api_key": TMDB_API_KEY,
+        "query": movie_name
+    }
+
+    data = requests.get(url, params=params).json()
+
+    return format_movies(data.get("results", []))
+
+
+def search_actor(actor_name):
+
+    person_url = "https://api.themoviedb.org/3/search/person"
+
+    data = requests.get(
+        person_url,
+        params={
+            "api_key": TMDB_API_KEY,
+            "query": actor_name
+        }
+    ).json()
+
+    if not data.get("results"):
+        return []
+
+    actor_id = data["results"][0]["id"]
+
+    credits_url = (
+        f"https://api.themoviedb.org/3/person/"
+        f"{actor_id}/movie_credits"
+    )
+
+    credits = requests.get(
+        credits_url,
+        params={"api_key": TMDB_API_KEY}
+    ).json()
+
+    return format_movies(credits.get("cast", []))
+
+
+def search_genre(genre_id):
+
+    url = "https://api.themoviedb.org/3/discover/movie"
+
+    data = requests.get(
+        url,
+        params={
+            "api_key": TMDB_API_KEY,
+            "with_genres": genre_id,
+            "sort_by": "popularity.desc"
+        }
+    ).json()
+
+    return format_movies(data.get("results", []))
+
+
+def search_year(year):
+
+    url = "https://api.themoviedb.org/3/discover/movie"
+
+    data = requests.get(
+        url,
+        params={
+            "api_key": TMDB_API_KEY,
+            "primary_release_year": year,
+            "sort_by": "popularity.desc"
+        }
+    ).json()
+
+    return format_movies(data.get("results", []))
