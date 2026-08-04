@@ -81,8 +81,7 @@ def top_rated():
     )
 
 
-@app.route("/language/<lang>")
-methods=["GET","POST"]
+@app.route("/language/<lang>",methods=["GET","POST"])
 def language(lang):
 
     return render_template(
