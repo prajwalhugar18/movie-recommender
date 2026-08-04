@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,redirect
 
 from movii import (
     search_movie,
@@ -96,7 +96,12 @@ def language(lang):
 @app.route("/trailer/<int:movie_id>")
 def trailer(movie_id):
 
-    return get_trailer(movie_id)
+    trailer_url = get_trailer(movie_id)
+
+    if trailer_url:
+        return redirect(trailer_url)
+
+    return "Trailer not found"
 @app.route("/movie/<int:movie_id>")
 def movie_details(movie_id):
 
@@ -118,5 +123,6 @@ def similar(movie_id):
         "index.html",
         recommendations=recommendations
     )
+
 if __name__ == "__main__":
     app.run(debug=True)
