@@ -17,7 +17,7 @@ def format_movies(movie_list):
                 + movie["poster_path"]
             )
 
-     results.append({
+    results.append({
          "id": movie.get("id"),
          "title": movie.get("title", "N/A"),
          "rating": movie.get("vote_average", "N/A"),
