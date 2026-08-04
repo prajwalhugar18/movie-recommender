@@ -17,15 +17,16 @@ def format_movies(movie_list):
                 + movie["poster_path"]
             )
 
-        results.append({
-            "title": movie.get("title", "N/A"),
-            "rating": movie.get("vote_average", "N/A"),
-            "year": movie.get("release_date", "")[:4]
-            if movie.get("release_date")
-            else "N/A",
-            "poster": poster
-        })
-
+     results.append({
+    "id": movie.get("id"),
+    "title": movie.get("title", "N/A"),
+    "rating": movie.get("vote_average", "N/A"),
+    "year": movie.get("release_date", "")[:4]
+    if movie.get("release_date")
+    else "N/A",
+    "poster": poster,
+    "overview": movie.get("overview", "No description available")
+})
     return results
 
 
@@ -103,3 +104,61 @@ def search_year(year):
     ).json()
 
     return format_movies(data.get("results", []))
+def trending_movies():
+
+    url = "https://api.themoviedb.org/3/trending/movie/week"
+
+    data = requests.get(
+        url,
+        params={"api_key": TMDB_API_KEY}
+    ).json()
+
+    return format_movies(data.get("results", []))
+
+
+def top_rated_movies():
+
+    url = "https://api.themoviedb.org/3/movie/top_rated"
+
+    data = requests.get(
+        url,
+        params={"api_key": TMDB_API_KEY}
+    ).json()
+
+    return format_movies(data.get("results", []))
+
+
+def search_language(language):
+
+    url = "https://api.themoviedb.org/3/discover/movie"
+
+    data = requests.get(
+        url,
+        params={
+            "api_key": TMDB_API_KEY,
+            "with_original_language": language
+        }
+    ).json()
+
+    return format_movies(data.get("results", []))
+
+
+def get_trailer(movie_id):
+
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}/videos"
+
+    data = requests.get(
+        url,
+        params={"api_key": TMDB_API_KEY}
+    ).json()
+
+    for video in data.get("results", []):
+
+        if video.get("site") == "YouTube":
+
+            return (
+                "https://www.youtube.com/watch?v="
+                + video["key"]
+            )
+
+    return ""

@@ -43,8 +43,25 @@
 
 <body>
 
-<h1>Prajwal Movie Recommendation System</h1>
+<h1>Movie Recommendation System</h1>
+<a href="/trending">
+<button>🔥 Trending Movies</button>
+</a>
 
+<a href="/toprated">
+<button>⭐ Top Rated</button>
+</a>
+
+<br><br>
+
+<a href="/language/English"><button>English</button></a>
+<a href="/language/Hindi"><button>Hindi</button></a>
+<a href="/language/Kannada"><button>Kannada</button></a>
+<a href="/language/Telugu"><button>Telugu</button></a>
+<a href="/language/Tamil"><button>Tamil</button></a>
+<a href="/language/Korean"><button>Korean</button></a>
+
+<br><br>
     <form method="POST">
 
     <select name="search_type">
@@ -101,7 +118,9 @@
         <p>
             Year: {{ movie["year"] }}
         </p>
-
+        <p>
+            {{ movie["overview"] }}
+        </p>
     </div>
 
     {% endfor %}
